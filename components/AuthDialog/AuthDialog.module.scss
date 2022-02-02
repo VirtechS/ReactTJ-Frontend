@@ -1,0 +1,16 @@
+.content {
+  button {
+      position: relative;
+    svg {
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        left: 10px;
+    }
+  }
+}
+
+.title {
+    font-size: 18px;
+    color: black !important;
+}
