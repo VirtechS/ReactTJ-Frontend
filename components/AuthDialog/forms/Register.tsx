@@ -4,13 +4,14 @@ import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterFormSchema } from "../../../utils/validations";
 import { FormField } from "../../FormField";
-import { UserApi } from "../../../utils/api";
+import { UserApi } from "../../../utils/api/user";
 import { CreateUserDto } from "../../../utils/api/types";
 import { setCookie } from "nookies";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { useAppDispatch } from '../../../redux/hooks';
 import { setUserData } from '../../../redux/slices/user';
+import { Api } from '../../../utils/api';
 
 interface LoginFormProps {
   onOpenRegister: () => void;
@@ -30,8 +31,8 @@ export const RegisterForm: React.FC<LoginFormProps> = ({
 
   const onSubmit = async (dto: CreateUserDto) => {
     try {
-      const data = await UserApi.register(dto);
-      setCookie(null, "authToken", data.token, {
+      const data = await Api().user.register(dto);
+      setCookie(null, "rtoken", data.token, {
         maxAge: 30 * 60 * 60 * 60,
         path: "/",
       });
