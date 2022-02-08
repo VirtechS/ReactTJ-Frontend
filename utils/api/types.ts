@@ -23,6 +23,7 @@ export type PostItem = {
   body: OutputData["blocks"];
   tags: null | string;
   id: number;
+  user: ResponseUser;
   views: number;
   description: string;
   createdAt: string;

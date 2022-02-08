@@ -10,8 +10,4 @@ const WritePage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = ctx => {
-    
-}
-
 export default WritePage;
