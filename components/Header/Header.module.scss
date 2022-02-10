@@ -4,11 +4,17 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  background-color: #fff4e2 !important;
+  background-color: #FFF4E2 !important;
   padding: 0 35px 0 10px;
   height: 60px;
   margin-bottom: 14px;
   z-index: 1;
+}
+
+.searchBlockPopup {
+  position: absolute !important;
+  top: 40px;
+  width: 310px;
 }
 
 .logo {
@@ -68,13 +74,14 @@
   align-items: center;
   font-size: 16px;
   cursor: pointer;
-  font-weight: 600;
-  margin-left: 10px;
+  font-weight: 500;
+  margin-left: 15px;
+
   svg {
     margin-right: 10px;
   }
+
   &:hover {
     color: #29b241;
   }
-
 }

@@ -12,6 +12,7 @@ export type LoginDto = {
 export type ResponseUser = {
   createdAt: string;
   email: string;
+  commentsCount?: number;
   fullName: string;
   id: number;
   token: string;
@@ -26,6 +27,15 @@ export type PostItem = {
   user: ResponseUser;
   views: number;
   description: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CommentItem = {
+  id: number;
+  text: string;
+  post: PostItem;
+  user: ResponseUser;
   createdAt: string;
   updatedAt: string;
 };

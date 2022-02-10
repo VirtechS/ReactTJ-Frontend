@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Paper, Typography } from "@material-ui/core";
+import Image from "next/image";
 
 import styles from "./Post.module.scss";
 import { PostActions } from "../PostActions";

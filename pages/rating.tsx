@@ -8,23 +8,39 @@ import {
   Typography,
   Tabs,
   Tab,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import { MainLayout } from '../layouts/MainLayout';
-import { FollowButton } from '../components/FollowButton';
+import { MainLayout } from "../layouts/MainLayout";
+import { FollowButton } from "../components/FollowButton";
+import { Api } from "../utils/api";
+import { NextPage } from "next";
+import { ResponseUser } from "../utils/api/types";
 
-export default function Rating() {
+interface RatingPageProps {
+  users: ResponseUser[];
+}
+
+const Rating: NextPage<RatingPageProps> = ({ users }) => {
   return (
     <MainLayout>
       <Paper className="pl-20 pt-20 pr-20 mb-20" elevation={0}>
-        <Typography variant="h5" style={{ fontWeight: 'bold', fontSize: 30, marginBottom: 6 }}>
+        <Typography
+          variant="h5"
+          style={{ fontWeight: "bold", fontSize: 30, marginBottom: 6 }}
+        >
           Рейтинг сообществ и блогов
         </Typography>
         <Typography style={{ fontSize: 15 }}>
-          Десять лучших авторов и комментаторов, а также администраторы первых десяти сообществ из
-          рейтинга по итогам месяца бесплатно получают Plus-аккаунт на месяц.
+          Десять лучших авторов и комментаторов, а также администраторы первых
+          десяти сообществ из рейтинга по итогам месяца бесплатно получают
+          Plus-аккаунт на месяц.
         </Typography>
-        <Tabs className="mt-10" value={0} indicatorColor="primary" textColor="primary">
+        <Tabs
+          className="mt-10"
+          value={0}
+          indicatorColor="primary"
+          textColor="primary"
+        >
           <Tab label="Август" />
           <Tab label="За 3 месяцуа" />
           <Tab label="За всё время" />
@@ -41,18 +57,41 @@ export default function Rating() {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                <span className="mr-15">1</span>Вася Пупкин
-              </TableCell>
-              <TableCell align="right">540</TableCell>
-              <TableCell align="right">
-                <FollowButton />
-              </TableCell>
-            </TableRow>
+            {users.map((obj) => (
+              <TableRow key={obj.id}>
+                <TableCell component="th" scope="row">
+                  <span className="mr-15">{obj.id}</span>
+                  {obj.fullName}
+                </TableCell>
+                <TableCell align="right">{obj.commentsCount * 2}</TableCell>
+                <TableCell align="right">
+                  <FollowButton />
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </Paper>
     </MainLayout>
   );
-}
+};
+
+export const getServerSideProps = async () => {
+  try {
+    const users = await Api().user.getAll();
+    return {
+      props: {
+        users,
+      },
+    };
+  } catch (err) {
+    console.log(err);
+  }
+  return {
+    props: {
+      users: null,
+    },
+  };
+};
+
+export default Rating;

@@ -1,19 +1,45 @@
-import { Button, Input } from "@material-ui/core";
 import React from "react";
+import Input from "@material-ui/core/Input";
 import styles from "./AddCommentForm.module.scss";
-interface AddCommentFormProps {}
+import { Button } from "@material-ui/core";
+import { Api } from "../../utils/api";
+import { CommentItem } from "../../utils/api/types";
 
-export const AddCommentForm: React.FC<AddCommentFormProps> = () => {
+interface AddCommentFormProps {
+  postId: number;
+  onSuccessAdd: (obj: CommentItem) => void;
+}
+
+export const AddCommentForm: React.FC<AddCommentFormProps> = ({
+  postId,
+  onSuccessAdd,
+}) => {
   const [clicked, setClicked] = React.useState(false);
+  const [isLoading, setLoading] = React.useState(false);
   const [text, setText] = React.useState("");
-  const onAddComment = () => {
-    setClicked(false);
-    setText("");
+
+  const onAddComment = async () => {
+    try {
+      setLoading(true);
+      const comment = await Api().comment.create({
+        postId,
+        text,
+      });
+      onSuccessAdd(comment);
+      setClicked(false);
+      setText("");
+    } catch (err) {
+      console.warn("Add comment", err);
+      alert("Ошибка при отправке комментария");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className={styles.form}>
       <Input
+        disabled={isLoading}
         onChange={(e) => setText(e.target.value)}
         value={text}
         onFocus={() => setClicked(true)}
@@ -25,7 +51,8 @@ export const AddCommentForm: React.FC<AddCommentFormProps> = () => {
       />
       {clicked && (
         <Button
-          onFocus={onAddComment}
+          disabled={isLoading}
+          onClick={onAddComment}
           className={styles.addButton}
           variant="contained"
           color="primary"
